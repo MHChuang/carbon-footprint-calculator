@@ -790,6 +790,44 @@ footer {
 }
 
 /* ============================================================
+   PDF 輸出模式 — 精簡版面
+   ============================================================ */
+.pdf-mode .score-card {
+    padding: 1rem 1.2rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    box-shadow: none;
+}
+
+.pdf-mode .leaf-bg { display: none; }
+
+.pdf-mode .score-value { font-size: 2.2rem; }
+.pdf-mode .score-label { font-size: 0.85rem; }
+.pdf-mode .unit { font-size: 0.9rem; }
+.pdf-mode .score-subtitle { font-size: 0.75rem; margin-top: 0.3rem; }
+
+.pdf-mode .charts-row {
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.pdf-mode .chart-container { height: 180px; }
+.pdf-mode .chart-block h3 { font-size: 0.85rem; margin-bottom: 0.5rem; }
+
+.pdf-mode .section-title { font-size: 0.95rem; margin: 0.8rem 0 0.5rem; }
+.pdf-mode .results-table { font-size: 0.75rem; }
+.pdf-mode .results-table th { padding: 0.4rem 0.3rem; font-size: 0.72rem; }
+.pdf-mode .results-table td { padding: 0.35rem 0.3rem; }
+
+.pdf-mode .suggestion-item {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.78rem;
+    margin-bottom: 0.3rem;
+}
+
+.pdf-mode .suggestions-block { margin-top: 0.5rem; }
+
+/* ============================================================
    RWD
    ============================================================ */
 @media (max-width: 768px) {

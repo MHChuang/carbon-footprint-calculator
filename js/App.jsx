@@ -397,6 +397,10 @@ function ResultsDashboard({ results, tripData }) {
         setDownloading(true);
         try {
             const element = reportRef.current;
+            // 切換 PDF 模式 — 縮小成績卡與裝飾
+            element.classList.add('pdf-mode');
+            // 等待樣式套用
+            await new Promise(r => setTimeout(r, 100));
             const dateStr = new Date().toISOString().slice(0, 10);
             const opt = {
                 margin:       [10, 8, 10, 8],
@@ -420,6 +424,7 @@ function ResultsDashboard({ results, tripData }) {
             console.error('PDF generation failed:', err);
             alert('PDF 下載失敗，請確認瀏覽器是否允許彈出視窗，或稍後再試。');
         } finally {
+            reportRef.current && reportRef.current.classList.remove('pdf-mode');
             setDownloading(false);
         }
     }, [downloading]);
