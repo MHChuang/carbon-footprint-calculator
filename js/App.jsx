@@ -390,6 +390,57 @@ function ResultsDashboard({ results, tripData }) {
     const barChartInstance = useRef(null);
     const reportRef = useRef(null);
     const [downloading, setDownloading] = useState(false);
+    const [saving, setSaving] = useState(false);
+    const [saved, setSaved] = useState(false);
+
+    // 儲存至 Google Sheets
+    const handleSaveToSheets = useCallback(async () => {
+        const endpoint = window.CONFIG.gasEndpoint;
+        if (!endpoint) {
+            alert('尚未設定系統儲存路徑 (gasEndpoint)。請聯絡管理員設定 Google Apps Script Web App 網址。');
+            return;
+        }
+
+        setSaving(true);
+        try {
+            // 準備上傳的數據結構
+            const payload = {
+                timestamp: new Date().toISOString(),
+                tripType: window.CONFIG.tourismTypeWeighting[tripData.tripType]?.label || tripData.tripType,
+                days: tripData.days,
+                passengers: tripData.passengers,
+                guides: tripData.guides,
+                drivers: tripData.drivers,
+                totalCarbon: results.totalCarbon,
+                merchantCount: results.merchantResults.length,
+                details: results.merchantResults.map(m => ({
+                    name: m.name,
+                    ci4: m.totalCi4,
+                    services: m.services.map(s => s.serviceCode).join(', ')
+                }))
+            };
+
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                // 使用 text/plain 避免 CORS preflight (OPTIONS) 請求被 GAS 阻擋
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+            if (result.status === 'success') {
+                setSaved(true);
+                alert('✅ 計算結果已成功儲存至系統！');
+            } else {
+                throw new Error(result.message || 'Unknown error');
+            }
+        } catch (err) {
+            console.error('儲存失敗:', err);
+            alert('儲存失敗，請確認網路連線或 GAS 設定 (' + err.message + ')');
+        } finally {
+            setSaving(false);
+        }
+    }, [results, tripData, saving, saved]);
 
     // PDF 下載
     const handleDownloadPDF = useCallback(async () => {
@@ -505,9 +556,14 @@ function ResultsDashboard({ results, tripData }) {
         <div className="step-content fade-in">
             <div className="results-actions">
                 <h2 className="step-title">📊 計算結果</h2>
-                <button className="btn btn-pdf" onClick={handleDownloadPDF} disabled={downloading}>
-                    {downloading ? '⏳ 生成中...' : '📄 下載 PDF 報告'}
-                </button>
+                <div className="action-buttons">
+                    <button className="btn btn-save" onClick={handleSaveToSheets} disabled={saving || saved}>
+                        {saving ? '⏳ 儲存中...' : saved ? '✅ 已儲存' : '💾 儲存至系統'}
+                    </button>
+                    <button className="btn btn-pdf" onClick={handleDownloadPDF} disabled={downloading}>
+                        {downloading ? '⏳ 生成中...' : '📄 PDF 報告'}
+                    </button>
+                </div>
             </div>
 
             <div ref={reportRef}>
