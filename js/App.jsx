@@ -397,18 +397,28 @@ function ResultsDashboard({ results, tripData }) {
         setDownloading(true);
         try {
             const element = reportRef.current;
+            const dateStr = new Date().toISOString().slice(0, 10);
             const opt = {
-                margin:       [10, 10, 10, 10],
-                filename:     `碳足跡計算報告_${new Date().toISOString().slice(0,10)}.pdf`,
-                image:        { type: 'jpeg', quality: 0.95 },
-                html2canvas:  { scale: 2, useCORS: true, logging: false },
+                margin:       [10, 8, 10, 8],
+                filename:     'CarbonFootprint_Report_' + dateStr + '.pdf',
+                image:        { type: 'jpeg', quality: 0.92 },
+                html2canvas:  { scale: 2, useCORS: true, logging: false, scrollY: 0 },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
                 pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
             };
-            await html2pdf().set(opt).from(element).save();
+            // 使用 Blob 方式確保正確的 PDF MIME type
+            const pdfBlob = await window.html2pdf().set(opt).from(element).outputPdf('blob');
+            const url = URL.createObjectURL(pdfBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'CarbonFootprint_Report_' + dateStr + '.pdf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
         } catch (err) {
-            console.error('PDF 生成失敗:', err);
-            alert('PDF 下載失敗，請稍後再試。');
+            console.error('PDF generation failed:', err);
+            alert('PDF 下載失敗，請確認瀏覽器是否允許彈出視窗，或稍後再試。');
         } finally {
             setDownloading(false);
         }
