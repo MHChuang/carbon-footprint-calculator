@@ -506,6 +506,47 @@ select { appearance: none; padding-right: 2.2rem; }
    結果頁
    ============================================================ */
 
+/* 結果頁標頭列 */
+.results-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.results-actions .step-title { margin-bottom: 0; }
+
+.btn-pdf {
+    padding: 0.6rem 1.4rem;
+    border-radius: var(--radius-sm);
+    border: 2px solid var(--primary);
+    background: linear-gradient(135deg, #fff, rgba(151,188,98,0.1));
+    color: var(--primary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.btn-pdf:hover {
+    background: linear-gradient(135deg, var(--primary-light), var(--primary));
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(44,95,45,0.2);
+    transform: translateY(-1px);
+}
+
+.btn-pdf:disabled {
+    opacity: 0.6;
+    cursor: wait;
+    transform: none;
+}
+
 /* 成績卡 */
 .score-card {
     position: relative;

@@ -388,6 +388,31 @@ function ResultsDashboard({ results, tripData }) {
     const chartInstance = useRef(null);
     const barChartRef = useRef(null);
     const barChartInstance = useRef(null);
+    const reportRef = useRef(null);
+    const [downloading, setDownloading] = useState(false);
+
+    // PDF 下載
+    const handleDownloadPDF = useCallback(async () => {
+        if (!reportRef.current || downloading) return;
+        setDownloading(true);
+        try {
+            const element = reportRef.current;
+            const opt = {
+                margin:       [10, 10, 10, 10],
+                filename:     `碳足跡計算報告_${new Date().toISOString().slice(0,10)}.pdf`,
+                image:        { type: 'jpeg', quality: 0.95 },
+                html2canvas:  { scale: 2, useCORS: true, logging: false },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+            };
+            await html2pdf().set(opt).from(element).save();
+        } catch (err) {
+            console.error('PDF 生成失敗:', err);
+            alert('PDF 下載失敗，請稍後再試。');
+        } finally {
+            setDownloading(false);
+        }
+    }, [downloading]);
 
     // 圓餅圖 — 服務類別佔比
     useEffect(() => {
@@ -463,7 +488,14 @@ function ResultsDashboard({ results, tripData }) {
 
     return (
         <div className="step-content fade-in">
-            <h2 className="step-title">📊 計算結果</h2>
+            <div className="results-actions">
+                <h2 className="step-title">📊 計算結果</h2>
+                <button className="btn btn-pdf" onClick={handleDownloadPDF} disabled={downloading}>
+                    {downloading ? '⏳ 生成中...' : '📄 下載 PDF 報告'}
+                </button>
+            </div>
+
+            <div ref={reportRef}>
 
             {/* 總碳足跡大卡 */}
             <div className="score-card">
@@ -552,6 +584,7 @@ function ResultsDashboard({ results, tripData }) {
                     </ul>
                 )}
             </div>
+            </div>{/* end reportRef */}
         </div>
     );
 }
