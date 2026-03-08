@@ -793,18 +793,21 @@ footer {
    PDF 輸出模式 — 精簡版面
    ============================================================ */
 .pdf-mode .score-card {
-    padding: 1rem 1.2rem;
-    border-radius: 10px;
+    background: #ffffff !important;
+    color: var(--primary) !important;
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
     margin-bottom: 1rem;
     box-shadow: none;
+    border: 2px solid var(--primary);
 }
 
-.pdf-mode .leaf-bg { display: none; }
+.pdf-mode .leaf-bg { display: none !important; }
 
-.pdf-mode .score-value { font-size: 2.2rem; }
-.pdf-mode .score-label { font-size: 0.85rem; }
-.pdf-mode .unit { font-size: 0.9rem; }
-.pdf-mode .score-subtitle { font-size: 0.75rem; margin-top: 0.3rem; }
+.pdf-mode .score-value { font-size: 2rem; color: var(--primary) !important; text-shadow: none !important; }
+.pdf-mode .score-label { font-size: 0.8rem; color: var(--text-light) !important; opacity: 1 !important; }
+.pdf-mode .unit { font-size: 0.85rem; color: var(--primary) !important; opacity: 1 !important; }
+.pdf-mode .score-subtitle { font-size: 0.72rem; margin-top: 0.2rem; color: var(--text-light) !important; opacity: 1 !important; }
 
 .pdf-mode .charts-row {
     gap: 1rem;
