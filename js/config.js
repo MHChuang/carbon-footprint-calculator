@@ -8,7 +8,7 @@ const CONFIG = {
     // Google Sheets (GAS) 儲存設定
     // 請填入您部署的 Google Apps Script Web App URL
     // ----------------------------------------------------------
-    gasEndpoint: "",
+    gasEndpoint: "https://script.google.com/macros/s/AKfycbzFMiA5rxfsS5G-ZzJLMzJX65qmQq0toN6_eoIiT-8CuZX0auQ7D9m5xNDKMK3f1b5k/exec",
 
     // ----------------------------------------------------------
     // 1. 服務類別定義
