@@ -1,0 +1,18 @@
+{
+  "name": "carbon-footprint-calculator",
+  "version": "2.0.0",
+  "private": true,
+  "description": "國家公園低碳生態旅遊碳足跡計算系統",
+  "scripts": {
+    "build": "node build.js",
+    "build:jsx": "npx @babel/cli src/js/App.jsx --out-file dist/js/App.js --presets=@babel/preset-react",
+    "build:minify": "node build.js"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.24.0",
+    "@babel/core": "^7.24.0",
+    "@babel/preset-react": "^7.24.0",
+    "terser": "^5.30.0",
+    "clean-css": "^5.3.3"
+  }
+}
